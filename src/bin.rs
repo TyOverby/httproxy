@@ -63,6 +63,7 @@ fn handle_connection(mut tcp_stream: net::TcpStream) -> IoResult<()> {
             .lines()
             // Take all the ones before \r\n that don't error out
             .take_while(|s| s.as_ref().map(|s| s != "\r").unwrap_or(false))
+            .map(|s| s.map(|a| a.trim().to_string()))
             // group them into an IoResult<Vec<_>>
             .collect();
     // Fail if any io error occurred since the beginning
